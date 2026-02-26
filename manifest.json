@@ -5,7 +5,9 @@
 	"version": "1.0",
 	"author": "yukine8",
 	"description": "ye!",
-	"icons": {},
+	"icons": {
+		"48": "src/icons/icon-48.png"
+	},
 	"chrome_url_overrides": {
 		"newtab": "src/newtab/index.html"
 	},
