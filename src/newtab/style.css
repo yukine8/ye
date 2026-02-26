@@ -1,0 +1,102 @@
+:root {
+	--base: "#2b2a33";
+	--accent: "#f9f9fa";
+	--hover: "#42414d";
+	--iconBase: "#666680";
+}
+
+body {
+	font-family: monospace;
+	display: flex;
+	padding-top: 16px;
+	background-color: var(--base);
+}
+
+#icon-options {
+	position: fixed;
+	right: 16px;
+	top: 16px;
+	z-index: 1000;
+	text-decoration: none;
+	cursor: pointer;
+	width: 24px;
+	height: 24px;
+	-webkit-mask: url("../icons/gear.svg") no-repeat center / contain;
+	mask: url("../icons/gear.svg") no-repeat center / contain;
+	background-color: var(--accent);
+}
+
+#container {
+	margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap; /* 画面幅に応じて折り返す */
+	justify-content: center;
+	max-width: 1200px; /* コンテナ全体の最大幅 */
+	width: 100%;
+}
+
+.column {
+	margin: 6px;
+	padding: 0;
+	border: transparent;
+	min-width: 100px;
+	flex: 1;
+	max-width: 20%;
+}
+
+.group {
+	margin-bottom: 16px;
+	padding: 4px;
+	border: transparent;
+}
+
+.group-label {
+	padding: 0 4px;
+	color: var(--accent);
+	font-size: 20px;
+}
+
+.item {
+	padding: 4px;
+	display: flex;
+	align-items: center;
+	color: var(--accent);
+	text-decoration: none; /* 長いブックマーク名が折り返さないように */
+	white-space: nowrap; /* はみ出した部分を隠す */
+	overflow: hidden;
+	text-overflow: ellipsis; /* はみ出した部分を...で表示 */
+}
+
+.item:hover {
+	background-color: var(--hover);
+}
+
+.item-favicon {
+	width: 16px;
+	height: 16px;
+	padding: 2px;
+	margin-right: 8px;
+	object-fit: contain;
+	background-color: var(--iconBase);
+}
+
+.item-label {
+	font-size: 16px;
+}
+
+/* 画面が狭い場合の調整 */
+/* 狭い画面では2列表示など */
+@media (max-width: 768px) {
+	fieldset.column {
+		min-width: calc(50% - 10px);
+		max-width: calc(50% - 10px);
+	}
+}
+
+/* さらに狭い画面では1列表示など */
+@media (max-width: 480px) {
+	fieldset.column {
+		min-width: calc(100% - 10px);
+		max-width: calc(100% - 10px);
+	}
+}

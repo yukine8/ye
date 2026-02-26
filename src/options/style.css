@@ -1,0 +1,99 @@
+:root {
+	--base: "#2b2a33";
+	--accent: "#f9f9fa";
+	--hover: "#42414d";
+	--iconBase: "#666680";
+}
+
+body {
+	font-family: monospace;
+	padding-top: 20px;
+	background-color: var(--base);
+}
+
+#icon-newtab {
+	position: fixed;
+	right: 16px;
+	top: 16px;
+	z-index: 1000;
+	text-decoration: none;
+	cursor: pointer;
+	width: 24px;
+	height: 24px;
+	-webkit-mask: url("../icons/home.svg") no-repeat center / contain;
+	mask: url("../icons/home.svg") no-repeat center / contain;
+	background-color: var(--accent);
+}
+
+#container {
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+.group {
+	margin-bottom: 16px;
+	padding: 4px;
+	border: transparent;
+}
+
+.group-label {
+	color: var(--accent);
+	font-size: 20px;
+}
+
+.item {
+	padding: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.item:hover {
+	background-color: var(--hover);
+}
+
+label {
+	font-size: 16px;
+	color: var(--accent);
+}
+
+select,
+input[type="text"],
+input[type="number"],
+button {
+	background-color: #222222;
+	color: #ffffff;
+	border: 1px solid #666666;
+}
+
+input[type="range"] {
+	display: none;
+}
+
+#custom-colors {
+	display: none;
+}
+
+#hidden-urls-list {
+	list-style: none;
+	padding: 0;
+}
+
+#hidden-urls-list li {
+	display: flex;
+	justify-content: space-between;
+	background-color: #222222;
+	padding: 5px;
+	margin: 5px;
+}
+
+#hidden-urls-list button {
+	background-color: #800;
+	border: none;
+	color: white;
+	cursor: pointer;
+}
+
+#new-hidden-url {
+	margin-left: 10px;
+}

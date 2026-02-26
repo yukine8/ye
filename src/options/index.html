@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>options</title>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" href="style.css" />
+		<script src="../lib/browser-polyfill.min.js" defer></script>
+		<script src="index.js" type="module" defer></script>
+	</head>
+	<body>
+		<a id="newtab" href="../newtab/index.html"
+			><span id="icon-newtab"></span
+		></a>
+		<div id="container">
+			<fieldset class="group">
+				<legend class="group-label">見た目</legend>
+
+				<div class="item">
+					<label for="theme">テーマ:</label>
+					<select id="theme">
+						<option value="light">light</option>
+						<option value="dark">dark</option>
+						<option value="custom">custom</option>
+					</select>
+				</div>
+
+				<div id="custom-colors">
+					<div class="item">
+						<label for="base">base:</label>
+						<input type="text" id="base" />
+					</div>
+					<div class="item">
+						<label for="accent">accent:</label>
+						<input type="text" id="accent" />
+					</div>
+					<div class="item">
+						<label for="hover">hover:</label>
+						<input type="text" id="hover" />
+					</div>
+					<div class="item">
+						<label for="iconBase">iconBase:</label>
+						<input type="text" id="iconBase" />
+					</div>
+				</div>
+			</fieldset>
+
+			<fieldset class="group">
+				<legend class="group-label">動作</legend>
+				<div class="item">
+					<label for="link-target">リンクの開き方:</label>
+					<select id="link-target">
+						<option value="_self">同じページで開く</option>
+						<option value="_blank">新しいページで開く</option>
+					</select>
+				</div>
+				<div class="item">
+					<label for="show-open-all">グループタイトルを押して全て開く:</label>
+					<input type="checkbox" id="show-open-all" />
+				</div>
+			</fieldset>
+
+			<fieldset class="group">
+				<legend class="group-label">非表示にするURL</legend>
+				<input type="text" id="new-hidden-url" placeholder="URLを追加" />
+				<button id="add-hidden-url">追加</button>
+				<ul id="hidden-urls-list"></ul>
+			</fieldset>
+		</div>
+	</body>
+</html>

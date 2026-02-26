@@ -1,0 +1,24 @@
+{
+	"manifest_version": 3,
+	"name": "ye",
+	"short_name": "ye",
+	"version": "1.1",
+	"author": "yukine8",
+	"description": "ye!",
+	"icons": {},
+	"chrome_url_overrides": {
+		"newtab": "src/newtab/index.html"
+	},
+	"chrome_settings_overrides": {
+		"homepage": "src/newtab/index.html"
+	},
+	"default_locale": "ja",
+	"permissions": ["activeTab", "bookmarks", "storage"],
+	"host_permissions": ["https://t2.gstatic.com/*"],
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "ye@example.com",
+			"strict_min_version": "109.0"
+		}
+	}
+}
