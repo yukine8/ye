@@ -2,6 +2,8 @@
 
 シンプルで、高速で、大量のブックマークを置けて、同期ができる新しいタブ
 
+![Image](https://github.com/user-attachments/assets/f8e96c05-d008-4bf8-91cb-c76b47e6dbfe)
+
 # 使い方
 
 ### 新しいタブの編集
