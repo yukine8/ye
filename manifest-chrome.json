@@ -11,9 +11,6 @@
 	"chrome_url_overrides": {
 		"newtab": "src/newtab/index.html"
 	},
-	"chrome_settings_overrides": {
-		"homepage": "src/newtab/index.html"
-	},
 	"default_locale": "ja",
 	"permissions": ["activeTab", "bookmarks", "storage"],
 	"host_permissions": ["https://t2.gstatic.com/*"],
