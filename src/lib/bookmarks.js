@@ -83,47 +83,38 @@ async function findSaveFolder(parentId, title) {
 }
 
 /**
- * ブックマークを読み込んで整形して返す
+ * yeフォルダ以下の全ブックマークツリーを一括取得し、整形して返す
+ * getSubTree を用いてAPI呼び出し回数を1回に削減し高速化する
  * @param {string} saveFolderId yeフォルダID
  * @returns {Promise<Object>} 整形されたブックマークデータ
  */
 async function cleanLoadBookmarkData(saveFolderId) {
 	const bookmarks = {};
 	try {
+		// yeフォルダを含めた全ツリーを一括で取得する
+		const [rootTree] = await browser.bookmarks.getSubTree(saveFolderId);
+		if (!rootTree || !rootTree.children) return bookmarks;
+
 		// yeフォルダ直下の列フォルダを、上からcolumnCountの数だけ取ってくる
-		const columnNodes = (await browser.bookmarks.getChildren(saveFolderId))
-			.filter((node) => !node.url || node.type === "folder")
-			.slice(0, COLUMN_COUNT);
+		const columnNodes = rootTree.children.filter((node) => !node.url || node.type === "folder").slice(0, COLUMN_COUNT);
 
 		for (const colNode of columnNodes) {
 			const columnTitle = colNode.title;
 			// 列フォルダ直下のグループフォルダを全部取ってくる
-			const groupNodes = (await browser.bookmarks.getChildren(colNode.id)).filter(
-				(node) => !node.url || node.type === "folder",
-			);
+			const groupNodes = (colNode.children || []).filter((node) => !node.url || node.type === "folder");
 
-			// グループフォルダ直下のURLとその名前を返す約束を作成
-			const groupPromises = groupNodes.map(async (groupNode) => {
-				const bookmarkList = (await browser.bookmarks.getChildren(groupNode.id))
-					// node.urlがtrueのものを取り出す
+			bookmarks[columnTitle] = {};
+			for (const groupNode of groupNodes) {
+				// グループフォルダ直下のURLとその名前を取り出す
+				const bookmarkList = (groupNode.children || [])
 					.filter((node) => node.url)
 					.map((item) => ({
 						name: item.title,
 						url: item.url,
 					}));
-				return {
-					groupName: groupNode.title,
-					list: bookmarkList,
-				};
-			});
 
-			// 約束の結果待ち
-			const groups = await Promise.all(groupPromises);
-
-			bookmarks[columnTitle] = {};
-			for (const group of groups) {
-				if (group.list.length > 0) {
-					bookmarks[columnTitle][group.groupName] = group.list;
+				if (bookmarkList.length > 0) {
+					bookmarks[columnTitle][groupNode.title] = bookmarkList;
 				}
 			}
 		}

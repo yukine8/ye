@@ -1,7 +1,7 @@
-import { loadOptions } from "../lib/preferences.js";
-import { applyTheme } from "../lib/style.js";
 import { fetchBookmarksData } from "../lib/bookmarks.js";
 import { getFavicon } from "../lib/faviconCache.js";
+import { loadOptions } from "../lib/preferences.js";
+import { applyTheme } from "../lib/style.js";
 
 // deferでロードは保証
 (async () => {
@@ -43,9 +43,16 @@ function filterBookmarks(bookmarks, hiddenUrls) {
 	return filtered;
 }
 
-// 描画用のブックマークオブジェクトからHTMLを構築
+/**
+ * 描画用のブックマークオブジェクトからHTMLを構築する
+ * パフォーマンス向上のため、DocumentFragmentを用いて一度にDOMへ追加する
+ * @param {Object} bookmarks
+ * @param {HTMLElement} container
+ * @param {Object} options
+ */
 async function renderBookmarks(bookmarks, container, options) {
 	container.innerHTML = ""; // 描画前にコンテナを空にする
+	const fragment = document.createDocumentFragment();
 
 	for (const columnKey in bookmarks) {
 		const columnFieldset = document.createElement("fieldset");
@@ -111,21 +118,28 @@ async function renderBookmarks(bookmarks, container, options) {
 				columnFieldset.appendChild(groupFieldset); // groupFieldsetをcolumnFieldsetに追加
 			}
 		}
-		container.appendChild(columnFieldset); // columnFieldsetをcontainerに追加
+		fragment.appendChild(columnFieldset); // columnFieldsetをfragmentに追加
 	}
+	container.appendChild(fragment); // 最後に1度だけDOMに追加
 }
 
 const DEFAULT_ICON_BASE64 =
 	"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iIzU1NSIgdmlld0JveD0iMCAwIDI1NiAyNTYiPjxwYXRoIGQ9Ik0xMjgsMjJBNjIsNjIsMCwwLDAsNjYsODRWMTcwYTYyLDYyLDAsMCwwLDEyNCwwVjg0QTYyLDYyLDAsMCwwLDEyOCwyMlptNDYsMTQ4YTM4LDM4LDAsMCwxLTI3LjMyLDM1LjQ4bC0uMTYuMDVBLjEuMSwwLDAsMSwxNDYuNDUsMjA1bC0uNDQtLjE5YTM3Ljc3LDM3Ljc3LDAsMCwxLTE3LjQ2LTIxLjQybC0uMTQtLjM1QS4xLjEsMCwwLDEsMTI4LjYxLDE4MGwzLS4zOGEzOCwzOCwwLDAsMSwzNS40OC0yNy4zMmwuMDUtLjE2YS4xLjEsMCwwLDEsLjM5LjEybC0uMTkuNDRB۳৭Ljc3LDM3Ljc3LDAsMCwxLDE1MCwxNzkuMzlsLS4zNS4xNEEuMS4xLDAsMCwxLDE0OS4xMSwxODBsLS4zOC0zWm0yMi4xNy01Mi4yOEExLjE0LDEuMTQsMCwwLDEsMTk2LDEyOGEzOCwzOCwwLDAsMS0zNS40OCwyNy4zMmwtLjA1KEwuMTZhLjEuMSwwLDAsMS0uMzktLjEybC4xOS0uNDRhMzcuNzcsMzcuNzcsMCwwLDEsMjEuNDItMTcuNDZsLjM1LS4xNEEuMS4xLDAsMCwxLDE4MS43OSwxMzdsMywuMzhhMzgsMzgsMCwwLDEsMjcuMzIsMzUuNDhsLjE2LjA1YS4xLjEsMCwwLDEsLjEyLS4zOWwtLjQ0LS4xOWEzNy43NywzNy43NywwLDAsMS0xNy40Ni0yMS40MmwtLjE0LS4zNWEuMS4xLDAsMCwxLC4xMi0uMzlMMTg0LDE1MGwyLjM4LTE4LjgzQTEuMTQsMS4xNCwwLDAsMSwxODYuMTcsMTI1LjcyWk04NCw4NEEzOCwzOCwwLDAsMSwxMTYuNjEsNDguMTJsMywuMzhhMzgsMzgsMCwwLDEsMjcuMzIsMzUuNDhsLjE2LjA1YS4xLjEsMCwwLDEsLjEyLS4zOWwtLjQ0LS4xOWEzNy43NywzNy43NywwLDAsMS0xNy40Ni0yMS40MmwtLjE0LS4zNUEuMS4xLDAsMCwxLDEyOC44MSw2MC";
 
+/**
+ * 表示されている全てのアイコンについて、並行してファビコンを取得し表示する
+ * ネットワーク等の遅延の影響を抑え、高速化を図る
+ */
 async function loadAndDisplayFavicons() {
 	console.log("loadAndDisplayFavicons called");
 	const imgs = document.querySelectorAll(".item-favicon");
-	imgs.forEach((img) => (img.src = DEFAULT_ICON_BASE64)); // プレースホルダ
-
 	for (const img of imgs) {
+		img.src = DEFAULT_ICON_BASE64;
+	} // プレースホルダ
+
+	const promises = Array.from(imgs).map(async (img) => {
 		const url = img.dataset.url;
-		if (!url) continue;
+		if (!url) return;
 
 		try {
 			const favicon = await getFavicon(url);
@@ -135,5 +149,7 @@ async function loadAndDisplayFavicons() {
 		} catch (e) {
 			console.error("Error loading favicon for", url, e);
 		}
-	}
+	});
+
+	await Promise.all(promises);
 }
