@@ -1,8 +1,8 @@
 :root {
-	--base: "#2b2a33";
-	--accent: "#f9f9fa";
-	--hover: "#42414d";
-	--iconBase: "#666680";
+	--base: #2b2a33;
+	--accent: #f9f9fa;
+	--hover: #42414d;
+	--iconBase: #666680;
 }
 
 body {
@@ -61,9 +61,9 @@ select,
 input[type="text"],
 input[type="number"],
 button {
-	background-color: #222222;
-	color: #ffffff;
-	border: 1px solid #666666;
+	background-color: var(--base);
+	color: var(--accent);
+	border: 1px solid var(--accent);
 }
 
 input[type="range"] {
