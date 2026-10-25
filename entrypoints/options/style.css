@@ -1,0 +1,267 @@
+:root {
+	--base: #2b2a33;
+	--accent: #f9f9fa;
+	--hover: #42414d;
+	--iconBase: #666680;
+}
+
+body {
+	font-family: monospace;
+	padding-top: 20px;
+	background-color: var(--base);
+}
+
+#newtab {
+	position: fixed;
+	right: 16px;
+	top: 16px;
+	z-index: 1000;
+	text-decoration: none;
+	cursor: pointer;
+	width: 24px;
+	height: 24px;
+	-webkit-mask: url("/icons/home.svg") no-repeat center / contain;
+	mask: url("/icons/home.svg") no-repeat center / contain;
+	background-color: var(--accent);
+}
+
+.settings {
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+.group {
+	margin-bottom: 16px;
+	padding: 4px;
+	border: transparent;
+}
+
+.group-label {
+	color: var(--accent);
+	font-size: 20px;
+}
+
+.item {
+	padding: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.item:hover {
+	background-color: var(--hover);
+}
+
+label,
+.item-name {
+	font-size: 16px;
+	color: var(--accent);
+}
+
+/* バックアップの貼り付け欄は、プレースホルダーの文字(ここにjsonを貼り付け)と同じ幅にする */
+#import-json {
+	width: 10em;
+}
+
+select,
+input[type="text"],
+input[type="url"],
+input[type="number"],
+button {
+	background-color: var(--base);
+	color: var(--accent);
+	border: 1px solid var(--accent);
+}
+
+input[type="range"] {
+	display: none;
+}
+
+/* ブックマークの編集画面 */
+.editor {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 16px;
+}
+
+.editor-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 16px;
+}
+
+.editor-error {
+	color: #ff6b6b;
+}
+
+.editor-columns {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	padding: 16px;
+	border: 1px solid var(--accent);
+}
+
+.editor-column {
+	flex: 1;
+	min-width: 220px;
+	/* グループがない列にもドロップできるように、高さを確保する */
+	min-height: 48px;
+}
+
+.editor-group {
+	margin-bottom: 16px;
+}
+
+.editor-row {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 4px;
+	color: var(--accent);
+}
+
+.editor-row:hover {
+	background-color: var(--hover);
+}
+
+.editor-item {
+	margin-left: 16px;
+}
+
+.editor-item .editor-label {
+	font-size: 16px;
+}
+
+.editor-label {
+	flex: 1;
+	min-width: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.editor-row.is-hidden .editor-label,
+.editor-row.is-hidden .item-favicon {
+	opacity: 0.4;
+}
+
+.item-favicon {
+	width: 16px;
+	height: 16px;
+	padding: 2px;
+	object-fit: contain;
+	background-color: var(--iconBase);
+}
+
+.icon-button {
+	flex: none;
+	width: 20px;
+	height: 20px;
+	padding: 0;
+	border: none;
+	background: none;
+	cursor: pointer;
+}
+
+.icon-button::before {
+	content: "";
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: var(--accent);
+	-webkit-mask: var(--icon) no-repeat center / contain;
+	mask: var(--icon) no-repeat center / contain;
+}
+
+.icon-edit {
+	--icon: url("/icons/edit.svg");
+}
+
+.icon-eye {
+	--icon: url("/icons/eye.svg");
+}
+
+.icon-eye-off {
+	--icon: url("/icons/eye-off.svg");
+}
+
+.icon-trash {
+	--icon: url("/icons/trash.svg");
+}
+
+button:disabled {
+	opacity: 0.4;
+	cursor: default;
+}
+
+dialog {
+	background-color: var(--base);
+	color: var(--accent);
+	border: 1px solid var(--accent);
+	min-width: 320px;
+}
+
+dialog::backdrop {
+	background-color: rgb(0 0 0 / 0.6);
+}
+
+.dialog-title {
+	margin-top: 0;
+	font-size: 20px;
+}
+
+.dialog-buttons {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 16px;
+}
+
+.note {
+	color: var(--accent);
+	opacity: 0.7;
+}
+
+/* ドラッグ＆ドロップ */
+.drag-handle {
+	display: flex;
+	align-items: center;
+	flex: 1;
+	min-width: 0;
+	gap: 4px;
+	cursor: grab;
+}
+
+.drag-handle:active {
+	cursor: grabbing;
+}
+
+/* ラベルや画像の上でも、ドラッグできるカーソルにする */
+.drag-handle * {
+	cursor: inherit;
+}
+
+.is-dragging {
+	opacity: 0.4;
+}
+
+/* ドロップする位置を、線や枠で示す */
+.drop-before {
+	box-shadow: 0 -2px 0 var(--accent);
+}
+
+/* 親の最後に入れるときは、最後の要素の下に線を出す(親に要素がなければ、親の先頭) */
+.drop-after {
+	box-shadow: 0 2px 0 var(--accent);
+}
+
+.drop-empty {
+	box-shadow: inset 0 2px 0 var(--accent);
+}
+
+/* ダイアログの入力欄は、マウスを乗せても背景を変えない(設定項目の行と同じ見た目にすると、ちらついて見えるため) */
+dialog .item:hover {
+	background-color: transparent;
+}

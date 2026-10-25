@@ -1,0 +1,28 @@
+{
+	"name": "ye",
+	"description": "ye!",
+	"private": true,
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "wxt",
+		"dev:firefox": "wxt -b firefox",
+		"build": "wxt build",
+		"build:firefox": "wxt build -b firefox",
+		"zip": "wxt zip",
+		"zip:firefox": "wxt zip -b firefox",
+		"compile": "tsc --noEmit",
+		"test": "vitest run",
+		"postinstall": "wxt prepare"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.16",
+		"@wxt-dev/module-solid": "^1.1.4",
+		"typescript": "6.0.3",
+		"vitest": "^5.0.5",
+		"wxt": "^0.20.26"
+	},
+	"dependencies": {
+		"solid-js": "^1.9.17"
+	}
+}
