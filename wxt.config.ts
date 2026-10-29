@@ -7,7 +7,7 @@ export default defineConfig({
 		const manifest: UserManifest = {
 			name: "__MSG_extensionName__",
 			description: "__MSG_extensionDescription__",
-			version: "1.0",
+			version: "1.1",
 			permissions: ["bookmarks"],
 			icons: {
 				"48": "/icons/icon-48.png",
@@ -20,7 +20,7 @@ export default defineConfig({
 		if (browser === "firefox") {
 			manifest.browser_specific_settings = {
 				gecko: {
-					id: "ye@yukine8",
+					id: "ye@example.com",
 					// data_collection_permissions に対応したバージョンから
 					strict_min_version: "140.0",
 					// faviconの画像を読むときに、ブックマークのホスト名をGoogle(t2.gstatic.com)に送る
